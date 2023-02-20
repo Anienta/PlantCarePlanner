@@ -1,0 +1,8 @@
+Flask~=2.2.2
+Flask-Session
+Flask-Mail
+Pillow
+requests
+gunicorn
+cs50
+werkzeug

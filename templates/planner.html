@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Planner
+{% endblock %}
+
+{% block body %}
+
+<table class="table table-striped">
+    <thead>
+    </thead>
+    <tbody>
+    <form action="/add_plant" method="post" id="addNewPlant" class="addNewPlant" enctype="multipart/form-data">
+        <tr>
+            <td class="text-start">
+                <div class="mb-3">
+                    <label for="image">Add Picture:</label>
+                    <input type="file" name="image" id="image">
+                    <div id="image-preview"></div>
+                </div>
+            </td>
+            <td class="text-start">
+                <div class="mb-3">
+                    <input type="text" name="plantname" id="plantname" placeholder="Name" required/>
+                </div>
+            </td>
+            <td class="text-start">
+                <div class="mb-3">
+                    <textarea type="text" name="plantdescription" id="plantdescription" placeholder="Description"
+                              rows="5"></textarea>
+                </div>
+            </td>
+            <td class="text-start">
+                <div class="mb-3">
+                    <label for="approx_watering">Approximate number of days to next watering:</label>
+                    <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="approx_watering" min="0"
+                           name="approx_watering"
+                           type="number">
+                    <label for="approx_fertilize">Approximate number of days to next fertilazation:</label>
+                    <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="approx_fertilize"
+                           min="0"
+                           name="approx_fertilize"
+                           type="number">
+                </div>
+            </td>
+            <td class="text-start">
+                <div class="mb-3">
+                    <button class="btn btn-secondary" type="submit">Add Plant</button>
+                </div>
+            </td>
+        </tr>
+    </form>
+    </tbody>
+</table>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th class="text-start">Picture</th>
+        <th class="text-start">Name</th>
+        <th class="text-start">Description</th>
+        <th class="text-end">Warnings</th>
+        <th class="text-end">Fertilizer</th>
+        <th class="text-end">Watering</th>
+        <th class="text-end">Remove</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in plant_list %}
+    <tr>
+        <td class="text-start"><img src="{{ row.image_url }}" alt="no picture"></td>
+        <td class="text-start">{{row.name}}</td>
+        <td class="text-start">{{row.description}}</td>
+        <th class="text-end">
+        {% for warning in row.warnings %}
+        {{warning}}<br>
+        {% endfor %}</th>
+        <td class="text-end">
+            <button type="button" class="btn btn-success" onclick="window.location='/fertilize_plant/{{row.plant_id}}'">
+                {{row.last_fertilizing_date}} days ago
+            </button>
+        </td>
+        <td class="text-end">
+            <button type="button" class="btn btn-info" onclick="window.location='/water_plant/{{row.plant_id}}'">
+                {{row.last_watering_date}} days ago
+            </button>
+        </td>
+        <td class="text-end">
+            <button type="button" class="btn btn-danger" onclick="window.location='/remove_plant/{{row.plant_id}}'">Remove</button>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const input = document.getElementById('image');
+    const preview = document.getElementById('image-preview');
+
+    input.addEventListener('change', () => {
+        // Check if a file was selected
+        if (input.files.length > 0) {
+            // Create a new FileReader object
+            const reader = new FileReader();
+            // Read the contents of the selected file
+            reader.readAsDataURL(input.files[0]);
+            // When the file has been read, display the image thumbnail
+            reader.onload = () => {
+                preview.innerHTML = `<img src="${reader.result}" width="100" height="100" alt="image preview">`;
+            };
+        }
+    });
+</script>
+{% endblock %}
+

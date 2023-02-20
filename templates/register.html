@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block title %}
+Register
+{% endblock %}
+
+{% block header %}
+{% if w is defined %}
+<div class="alert alert-warning" role="alert">
+    Password must contain min. 8 characters, at least one small and one capital letter,
+    one digit and one special character.
+</div>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="mb-3">
+    <h3>Register</h3>
+</div>
+
+<form action="/register" method="post">
+
+    <div class="mb-3">
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="email" name="email"
+               placeholder="e-mail" type="text">
+    </div>
+    <div class="mb-3">
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username"
+               placeholder="Username" type="text">
+    </div>
+    <div class="mb-3">
+        <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password">
+    </div>
+    <div class="mb-3">
+        <input class="form-control mx-auto w-auto" id="confirmation" name="confirmation" placeholder="repeat password"
+               type="password">
+    </div>
+    <div class="mb-3">
+        <button class="btn btn-secondary" type="submit">Register</button>
+    </div>
+</form>
+
+
+{% endblock %}
+
